@@ -45,7 +45,8 @@ class ProductCreateLayout extends Rows
                 ->title('Фото товара')
                 ->minCanvas(500)
                 ->maxWidth(1000)
-                ->maxHeight(800),
+                ->maxHeight(800)
+                ->targetRelativeUrl(),
 
             Input::make('product.price')
                 ->title('Цена товара')

@@ -5,7 +5,7 @@ namespace App\Orchid\Screens\Product;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Orchid\Layouts\Product\ProductCreateLayout;
-use Illuminate\Http\Client\Request;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Screen;
@@ -73,15 +73,42 @@ class ProductCreateScreen extends Screen
         ];
     }
 
-    private function createOrUpdate(Request $request)
+    public function createOrUpdate(Request $request)
     {
         $data = $request->get('product');
-        $path = $request->file('product.image')->store('products');
-        $data['product.image'] = $path;
-        $this->product->fill($data)->save();
+        $data['category_id'] = $data['category'];
+        unset($data['category']);
+        if (!empty($data['image'])) {
+            // Путь к файлу, загруженному Cropper (например, storage/app/public/2025/02/20/xxx.jpg)
+            $originalPath = storage_path('app/public/' . $data['image']);
 
-        Alert::info('Вы успешно создали товар ' . $this->product->name);
+            if (file_exists($originalPath)) {
+                // Генерируем новое имя файла
+                $fileName = basename($originalPath);
+                $newPath = 'products/' . $fileName;
 
+                // Перемещаем файл в нужную директорию
+                Storage::disk('public')->move($data['image'], $newPath);
+
+                // Обновляем путь в данных
+                $data['image'] = $newPath;
+            }
+        } else {
+            // Если файл не загружен, сбрасываем поле
+            $data['image'] = null;
+        }
+        // Заполняем модель данными
+        $this->product->fill($data);
+        // Сохраняем модель
+        $saved = $this->product->save();
+        // Уведомление в зависимости от контекста
+        $message = $this->product->wasRecentlyCreated
+            ? 'Вы успешно создали товар ' . $this->product->name
+            : 'Вы успешно обновили товар ' . $this->product->name;
+
+        Alert::success($message);
         return redirect()->route('platform.product.list');
     }
+
+
 }

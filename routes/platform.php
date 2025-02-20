@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Orchid\Screens\Category\CategoryCreateScreen;
+use App\Orchid\Screens\Category\CategoryListScreen;
 use App\Orchid\Screens\Examples\ExampleActionsScreen;
 use App\Orchid\Screens\Examples\ExampleCardsScreen;
 use App\Orchid\Screens\Examples\ExampleChartsScreen;
@@ -32,6 +34,15 @@ use Tabuna\Breadcrumbs\Trail;
 | contains the need "dashboard" middleware group. Now create something great!
 |
 */
+
+//Category
+
+Route::screen('category/edit/{category}', CategoryCreateScreen::class)
+    ->name('platform.category.edit');
+Route::screen('category/create', CategoryCreateScreen::class)
+    ->name('platform.category.create');
+Route::screen('category/list', CategoryListScreen::class)
+    ->name('platform.category.list');
 
 //Product
 Route::screen('product/create', ProductCreateScreen::class)
