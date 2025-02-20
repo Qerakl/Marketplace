@@ -12,6 +12,8 @@ use App\Orchid\Screens\Examples\ExampleLayoutsScreen;
 use App\Orchid\Screens\Examples\ExampleScreen;
 use App\Orchid\Screens\Examples\ExampleTextEditorsScreen;
 use App\Orchid\Screens\PlatformScreen;
+use App\Orchid\Screens\Product\ProductCreateScreen;
+use App\Orchid\Screens\Product\ProductListScreen;
 use App\Orchid\Screens\Role\RoleEditScreen;
 use App\Orchid\Screens\Role\RoleListScreen;
 use App\Orchid\Screens\User\UserEditScreen;
@@ -30,6 +32,14 @@ use Tabuna\Breadcrumbs\Trail;
 | contains the need "dashboard" middleware group. Now create something great!
 |
 */
+
+//Product
+Route::screen('product/create', ProductCreateScreen::class)
+    ->name('platform.product.create');
+Route::screen('product/edit/{product}', ProductCreateScreen::class)
+    ->name('platform.product.edit');
+Route::screen('product/list', ProductListScreen::class)
+    ->name('platform.product.list');
 
 // Main
 Route::screen('/main', PlatformScreen::class)

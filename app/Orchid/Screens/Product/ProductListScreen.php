@@ -5,6 +5,7 @@ namespace App\Orchid\Screens\Product;
 use App\Models\Product;
 use App\Orchid\Layouts\Product\ProductListLayout;
 use Orchid\Screen\Actions\Button;
+use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Screen;
 
 class ProductListScreen extends Screen
@@ -41,9 +42,9 @@ class ProductListScreen extends Screen
     public function commandBar(): iterable
     {
         return [
-            Button::make('Создать товар')
+            Link::make('Создать товар')
                 ->icon('pencil')
-                ->route('product.create'),
+                ->route('platform.product.create'),
         ];
     }
 
